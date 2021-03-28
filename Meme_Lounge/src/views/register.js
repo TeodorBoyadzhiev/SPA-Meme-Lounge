@@ -22,7 +22,7 @@ const registerTemplate = (onSubmit) => html`<section id="register">
         </div>
         <input type="submit" class="registerbtn button" value="Register">
         <div class="container signin">
-            <p>Already have an account?<a href="#">Sign in</a>.</p>
+            <p>Already have an account?<a href="/login">Sign in</a>.</p>
         </div>
     </div>
 </form>
@@ -36,10 +36,10 @@ export async function registerPage(ctx) {
         event.preventDefault();
         const formData = new FormData(event.target);
 
-        const username = formData.get('username');
-        const email = formData.get('email');
-        const password = formData.get('password');
-        const repeatPass = formData.get('repeatPass');
+        const username = formData.get('username').trim();
+        const email = formData.get('email').trim();
+        const password = formData.get('password').trim();
+        const repeatPass = formData.get('repeatPass').trim();
         const gender = formData.get('gender');
 
         if (!username || !password || !email || !repeatPass || !gender) {
