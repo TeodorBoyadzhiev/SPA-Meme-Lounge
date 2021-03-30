@@ -41,6 +41,6 @@ export async function editPage(ctx) {
             description,
             imageUrl
         });
-        ctx.page.redirect('/details' + memeId);
+        ctx.page.redirect('/details/' + memeId);
     }
 }

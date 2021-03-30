@@ -1,8 +1,8 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 
-import { getMemeById } from '../api/data.js';
+import { deleteMeme, getMemeById } from '../api/data.js';
 
-const detailsTemplate = (meme,isOwner)=> html`
+const detailsTemplate = (meme,isOwner,onDelete)=> html`
 <section id="meme-details">
                 <h1>${meme.title}</h1>
                 <div class="meme-details">
@@ -14,7 +14,7 @@ const detailsTemplate = (meme,isOwner)=> html`
                         <p>${meme.description}</p>
                         ${isOwner ? html`
                         <a class="button warning" href="/edit/${meme._id}">Edit</a>
-                        <button class="button danger">Delete</button>` : ''
+                        <button @click=${onDelete} class="button danger">Delete</button>` : ''
                     }
                         
 
@@ -28,5 +28,14 @@ export async function detailsPage(context) {
     const memeId = context.params.id;
     const meme = await getMemeById(memeId);
     const isOwner = userId === meme._ownerId;
-    context.render(detailsTemplate(meme, isOwner));
+    context.render(detailsTemplate(meme, isOwner,onDelete));
+
+
+    async function onDelete() {
+        const confirmed = confirm('Are you sure?');
+        if (confirmed) {
+            await deleteMeme(memeId);
+            context.page.redirect('/catalog');
+        }
+    }
 }
